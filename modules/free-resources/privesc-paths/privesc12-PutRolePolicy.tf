@@ -6,15 +6,21 @@ resource "aws_iam_policy" "privesc12-PutRolePolicy" {
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
   policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "iam:PutRolePolicy"
-        Effect   = "Allow"
-        Resource = "*"
-      },
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": "iam:PutRolePolicy",
+            "Effect": "Allow",
+            "Resource": "*"
+        },
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "sts:AssumeRole",
+            "Resource": "arn:aws:iam::864154101007:role/privesc12-PutRolePolicy-role"
+        }
     ]
-  })
+})
 }
 
 resource "aws_iam_role" "privesc12-PutRolePolicy-role" {
@@ -27,7 +33,8 @@ resource "aws_iam_role" "privesc12-PutRolePolicy-role" {
         Effect = "Allow"
         Sid    = ""
         Principal = {
-          AWS = var.aws_assume_role_arn
+          AWS = var.aws_assume_role_arn,
+          "arn:aws:iam::864154101007:user/privesc12-PutRolePolicy-user"
         }
       },
     ]
